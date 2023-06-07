@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Todo-Liste REST API
+  description: Todo-Listenverwatlung
+  contact:
+    email: arminsaderi@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1.0'
+servers:
+  - url: http://127.0.0.1:5000
+paths:
+  /todo-list/{list_id}:
+    get:
+      description: Liefert alle Einträge einer Todo-Liste zurück
+      parameters:
+        - name: list_id
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: JSON-Objekt Liste aller Einträge der gegebenen Liste
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entries:
+                    type: array
+                    items:
+                      #@TODO: hier bearbeiten
+                     $ref: '#/components/schemas/List'
+        '404':
+          description: 404 Error
+  #@TODO: hier bearbeiten, kann nicht doppelt sein
+    delete:
+      parameters:
+        - name: list_id
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      description: Löscht eine komplette Todo-Liste mit allen Einträgen
+      responses:
+        '200':
+          description: Löschen erfolgreich
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+        '404':
+          description: 404 Error
+  /todo-list:
+    post:
+      description: Fügt eine neue Todo-Liste hinzu.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                name:
+                  type: string
+                  description: Name der neuen Liste
+              required: 
+                - name
+      responses:
+        '200':
+          description: hinzufügen erfolgreich
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+  /todo-list/{list_id}/entry:
+    post:
+      parameters:
+        - name: list_id
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      description: Fügt einen Eintrag zu einer bestehenden Todo-Liste hinzu
+      responses:
+        '200':
+          description: Löschen erfolgreich
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+        '404':
+          description: 404 fehlerhafte ID
+        '400':
+          description: Bei fehlerhaften Daten
+  /todo-list/{list_id}/{entry_id}:
+    put:
+      parameters:
+        - name: list_id
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: entry_id
+          in: path
+          description: entry ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      description: Aktualisiert einen bestehenden Eintrag
+      responses:
+        '200':
+          description: Löschen erfolgreich
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+        '404':
+          description: 404 fehlerhafte ID
+        '400':
+          description: Bei fehlerhaften Daten
+  #@Todo: hier bearbeiten, endpoint ist doppelt und somit nicht eindeutig
+  /todo-list/{list_id}/ PUT entry/{entry_id}:
+    delete:
+      parameters:
+        - name: list_id
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: entry_id
+          in: path
+          description: entry ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      description: Aktualisiert einen bestehenden Eintrag
+      responses:
+        '200':
+          description: Löschen erfolgreich
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+        '404':
+          description: 404 fehlerhafte ID
+        '400':
+          description: Bei fehlerhaften Daten
+components:
+  schemas:
+    List:
+      type: object
+      properties:
+        list_id:
+          type: object
